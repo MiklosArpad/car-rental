@@ -1,5 +1,9 @@
 package com.carrental.service;
 
+import com.carrental.exception.VehicleNotFoundException;
+import com.carrental.model.Vehicle;
+import com.carrental.repository.VehicleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -7,11 +11,24 @@ import java.util.List;
 @Service
 public class VehicleService {
 
-    public List<String> getVehicles() {
-        return List.of("BMW", "Audi", "Mercedes");
+    private final VehicleRepository vehicleRepository;
+
+    @Autowired
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
-    public String getVehicle(int id) {
-        return "BMW";
+    public List<Vehicle> getVehicles() {
+        return vehicleRepository.findAll();
+    }
+
+    public Vehicle getVehicle(Long id) {
+        var vehicle = vehicleRepository.findById(id);
+
+        if (vehicle.isPresent()) {
+            return vehicle.get();
+        }
+
+        throw new VehicleNotFoundException();
     }
 }
