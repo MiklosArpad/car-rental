@@ -31,4 +31,30 @@ public class VehicleService {
 
         throw new VehicleNotFoundException();
     }
+
+    public Vehicle saveVehicle(Vehicle vehicle) {
+        return vehicleRepository.save(vehicle);
+    }
+
+    public Vehicle updateVehicle(Long id, Vehicle vehicle) {
+        var vehicleToUpdate = vehicleRepository.findById(id);
+
+        if (vehicleToUpdate.isEmpty()) {
+            throw new VehicleNotFoundException();
+        }
+
+        vehicleToUpdate.get().update(vehicle);
+
+        return vehicleRepository.save(vehicleToUpdate.get());
+    }
+
+    public void deleteVehicle(Long id) {
+        var vehicleToDelete = vehicleRepository.findById(id);
+
+        if (vehicleToDelete.isEmpty()) {
+            throw new VehicleNotFoundException();
+        }
+
+        vehicleRepository.deleteById(id);
+    }
 }

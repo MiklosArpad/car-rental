@@ -56,6 +56,13 @@ public class Vehicle {
         this.color = color;
     }
 
+    public void update(Vehicle vehicle) {
+        this.licensePlate = vehicle.licensePlate;
+        this.color = vehicle.color;
+        this.model = vehicle.model;
+        this.make = vehicle.make;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

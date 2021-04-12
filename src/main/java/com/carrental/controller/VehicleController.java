@@ -5,10 +5,7 @@ import com.carrental.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,36 @@ public class VehicleController {
         try {
             var vehicle = vehicleService.getVehicle(id);
             return new ResponseEntity<>(vehicle, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // POST: api/vehicles
+    @PostMapping
+    public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
+        var savedVehicle = vehicleService.saveVehicle(vehicle);
+        return new ResponseEntity<>(savedVehicle, HttpStatus.CREATED);
+    }
+
+    // PUT: api/vehicles/1
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Vehicle> updateVehicle(@PathVariable Long id,
+                                                 @RequestBody Vehicle vehicle) {
+        try {
+            var updatedVehicle = vehicleService.updateVehicle(id, vehicle);
+            return new ResponseEntity<>(updatedVehicle, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // DELETE: api/vehicles/1
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable Long id) {
+        try {
+            vehicleService.deleteVehicle(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
