@@ -1,6 +1,8 @@
 package com.carrental.controller;
 
+import com.carrental.mapper.VehicleToResourceMapper;
 import com.carrental.model.Vehicle;
+import com.carrental.resource.VehicleResponseResource;
 import com.carrental.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,22 +10,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final VehicleToResourceMapper toResourceMapper;
 
     @Autowired
-    public VehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService,
+                             VehicleToResourceMapper toResourceMapper) {
         this.vehicleService = vehicleService;
+        this.toResourceMapper = toResourceMapper;
     }
 
     // GET: api/vehicles
     @GetMapping
-    public ResponseEntity<List<Vehicle>> getVehicles() {
-        return new ResponseEntity<>(vehicleService.getVehicles(), HttpStatus.OK);
+    public ResponseEntity<List<VehicleResponseResource>> getVehicles() {
+        var vehicles = vehicleService.getVehicles();
+
+        var vehicleResources = vehicles.stream()
+                .map(toResourceMapper::map)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(vehicleResources, HttpStatus.OK);
     }
 
     // GET: api/vehicles/1

@@ -12,7 +12,11 @@ public class Vehicle {
     private Long id;
 
     private String licensePlate;
-    private String make;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "make_id")
+    private Make make;
+
     private String model;
     private String color;
 
@@ -32,11 +36,11 @@ public class Vehicle {
         this.licensePlate = licensePlate;
     }
 
-    public String getMake() {
+    public Make getMake() {
         return make;
     }
 
-    public void setMake(String make) {
+    public void setMake(Make make) {
         this.make = make;
     }
 
