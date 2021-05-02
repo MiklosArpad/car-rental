@@ -25,6 +25,9 @@ public class VehicleToResourceMapper implements Mapper<Vehicle, VehicleResponseR
         var makeResource = toResourceMapper.map(vehicle.getMake());
         vehicleResource.setMake(makeResource);
 
+        vehicleResource.setModel(vehicle.getModel());
+        vehicleResource.setColor(vehicle.getColor());
+
         return vehicleResource;
     }
 }
