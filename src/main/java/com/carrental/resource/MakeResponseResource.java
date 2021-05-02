@@ -1,6 +1,8 @@
 package com.carrental.resource;
 
-public class MakeResponseResource {
+import java.io.Serializable;
+
+public class MakeResponseResource implements Serializable {
     private Long id;
     private String name;
 
